@@ -1,7 +1,18 @@
 //! # serverless-web
+//! ...
+//!
 
 #![warn(clippy::pedantic)]
 #![warn(missing_docs)]
+
+#[cfg(feature = "cf_workers")]
+pub mod cloudflare;
+
+#[cfg(feature = "spin")]
+pub mod spin;
+
+#[cfg(feature = "serde")]
+pub mod serde;
 
 use http::StatusCode;
 use std::borrow::Cow;
@@ -54,22 +65,4 @@ pub trait Handler {
 
     /// ...
     fn handle(&self, req: Self::Req) -> Self::Resp;
-}
-
-#[cfg(feature = "serde")]
-pub trait RequestExt: Request {
-    fn json_body<T: serde::de::DeserializeOwned>(&self) -> Result<T, serde_json::Error> {
-        serde_json::from_slice(self.body())
-    }
-}
-
-#[cfg(feature = "serde")]
-pub trait ResponseBuilderExt: ResponseBuilder {
-    fn json<T: serde::ser::Serialize>(self, value: &T) -> Result<Self::Resp, serde_json::Error> {
-        let bytes = serde_json::to_vec(value)?;
-        Ok(self
-            .header("content-type", "application/json")
-            .body(bytes)
-            .build())
-    }
 }

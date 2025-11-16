@@ -1100,6 +1100,7 @@ dependencies = [
  "fastly",
  "http",
  "serde",
+ "spin-contrib-http",
  "spin-sdk",
  "worker",
 ]
@@ -1164,6 +1165,17 @@ dependencies = [
  "autocfg",
  "static_assertions",
  "version_check",
+]
+
+[[package]]
+name = "spin-contrib-http"
+version = "0.0.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3eb03a2f5dca403b26de614777c5dd5c672a478eba0cd89e8a74e6f82d1108a9"
+dependencies = [
+ "anyhow",
+ "http",
+ "spin-sdk",
 ]
 
 [[package]]
